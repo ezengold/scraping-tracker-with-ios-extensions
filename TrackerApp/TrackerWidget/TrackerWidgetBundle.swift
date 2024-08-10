@@ -12,6 +12,5 @@ import SwiftUI
 struct TrackerWidgetBundle: WidgetBundle {
     var body: some Widget {
         TrackerWidget()
-        TrackerWidgetLiveActivity()
     }
 }

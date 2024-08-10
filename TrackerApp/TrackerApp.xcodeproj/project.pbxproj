@@ -24,7 +24,6 @@
 		B1CDF5252C6575C40005EF4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1CDF5242C6575C40005EF4C /* Assets.xcassets */; };
 		B1CDF5292C6575C40005EF4C /* TrackerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B1CDF5152C6575C30005EF4C /* TrackerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B1CDF5302C6585970005EF4C /* TrackerWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CDF52E2C6585960005EF4C /* TrackerWidgetBundle.swift */; };
-		B1CDF5312C6585970005EF4C /* TrackerWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CDF52F2C6585960005EF4C /* TrackerWidgetLiveActivity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,7 +87,6 @@
 		B1CDF5242C6575C40005EF4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B1CDF5262C6575C40005EF4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1CDF52E2C6585960005EF4C /* TrackerWidgetBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackerWidgetBundle.swift; sourceTree = "<group>"; };
-		B1CDF52F2C6585960005EF4C /* TrackerWidgetLiveActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackerWidgetLiveActivity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,7 +224,6 @@
 			isa = PBXGroup;
 			children = (
 				B1CDF52E2C6585960005EF4C /* TrackerWidgetBundle.swift */,
-				B1CDF52F2C6585960005EF4C /* TrackerWidgetLiveActivity.swift */,
 				B1CDF5202C6575C30005EF4C /* TrackerWidget.swift */,
 				B1CDF5242C6575C40005EF4C /* Assets.xcassets */,
 				B1CDF5262C6575C40005EF4C /* Info.plist */,
@@ -427,7 +424,6 @@
 			files = (
 				B1CDF5302C6585970005EF4C /* TrackerWidgetBundle.swift in Sources */,
 				B1CDF5212C6575C30005EF4C /* TrackerWidget.swift in Sources */,
-				B1CDF5312C6585970005EF4C /* TrackerWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
