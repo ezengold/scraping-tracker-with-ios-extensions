@@ -16,17 +16,14 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 	
 	static var description = IntentDescription("Set up your tracking informations")
 
-	@Parameter(title: "Element ID", default: "ct")
-	var elementId: String
+	@Parameter(title: "Selector", default: "#ct")
+	var querySelector: String {
+		didSet {
+			UserDefaults(suiteName: Constants.ROOT_KEY)?.setValue(querySelector, forKey: Constants.CONTENT_SELECTOR_KEY)
+		}
+	}
 	
-	@Parameter(title: "Element Type", optionsProvider: ElementTypeOptionsProvider())
-	var elementType: String
-	
-	var price: String = ""
-	
-	var cents: String = ""
-	
-	var discount: String = ""
+	var url: String = UserDefaults(suiteName: Constants.ROOT_KEY)?.string(forKey: Constants.CONTENT_URL_KEY) ?? ""
 	
 	struct ElementTypeOptionsProvider: DynamicOptionsProvider {
 		
@@ -45,23 +42,31 @@ struct TrackingEntry: TimelineEntry {
 	
 	let date: Date
 	
+	let item: TrackedItem
+	
 	let configuration: ConfigurationAppIntent
 }
 
 struct Provider: AppIntentTimelineProvider {
 	
 	func placeholder(in context: Context) -> TrackingEntry {
-		TrackingEntry(date: Date(), configuration: ConfigurationAppIntent())
+		TrackingEntry(date: Date(), item: TrackedItem(), configuration: ConfigurationAppIntent())
 	}
 	
 	func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> TrackingEntry {
-		TrackingEntry(date: Date(), configuration: configuration)
+		TrackingEntry(date: Date(), item: TrackedItem(), configuration: configuration)
 	}
 	
 	func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<TrackingEntry> {
-		let nextUpdateTime: Date = .now.addingTimeInterval(3) // TODO: Extend time
-		let entry = TrackingEntry(date: .now, configuration: configuration)
-		return Timeline(entries: [entry], policy: .after(nextUpdateTime))
+		if !configuration.url.isEmpty {
+			let _item = await FetchItemUseCase(api: ContentApiImpl.shared).execute(at: configuration.url, withSelector: configuration.querySelector)
+			
+			let entry = TrackingEntry(date: Date(), item: _item, configuration: configuration)
+			
+			return Timeline(entries: [entry], policy: .atEnd)
+		} else {
+			return Timeline(entries: [.init(date: Date(), item: TrackedItem(), configuration: .init())], policy: .after(.now.addingTimeInterval(30))) // retry after 30 secs
+		}
 	}
 }
 
@@ -88,10 +93,10 @@ struct TrackerWidgetEntryView : View {
 						.frame(maxWidth: .infinity)
 						.padding(.bottom, 5)
 					HStack(alignment: .top, spacing: 0) {
-						Text(entry.configuration.price)
+						Text(entry.item.price)
 							.font(.largeTitle.bold())
 							.contentTransition(.numericText())
-						Text(entry.configuration.cents)
+						Text(entry.item.cents)
 							.font(.headline.bold())
 							.contentTransition(.numericText())
 							.offset(CGSize(width: 0.0, height: 5.0))
@@ -113,7 +118,7 @@ struct TrackerWidgetEntryView : View {
 						Spacer()
 						
 						HStack(alignment: .center, spacing: 0) {
-							Text("\(entry.configuration.discount)%")
+							Text("\(entry.item.discount)%")
 								.font(.title)
 								.contentTransition(.numericText())
 								.foregroundColor(.green)
@@ -130,10 +135,10 @@ struct TrackerWidgetEntryView : View {
 							}
 							Spacer()
 							HStack(alignment: .top, spacing: 0) {
-								Text(entry.configuration.price)
+								Text(entry.item.price)
 									.font(.largeTitle.bold())
 									.contentTransition(.numericText())
-								Text(entry.configuration.cents)
+								Text(entry.item.cents)
 									.font(.headline.bold())
 									.contentTransition(.numericText())
 									.offset(CGSize(width: 0.0, height: 5.0))
@@ -149,10 +154,10 @@ struct TrackerWidgetEntryView : View {
 					Text("Tracked Price is")
 						.fontWeight(.bold)
 					HStack(alignment: .center, spacing: 0) {
-						Text("$ \(entry.configuration.price)")
+						Text("$ \(entry.item.price)")
 							.font(.largeTitle.bold())
 							.contentTransition(.numericText())
-						Text(entry.configuration.cents)
+						Text(entry.item.cents)
 							.font(.headline.bold())
 							.contentTransition(.numericText())
 							.offset(CGSize(width: 0.0, height: -10.0))
@@ -162,7 +167,7 @@ struct TrackerWidgetEntryView : View {
 				
 			case .accessoryInline:
 				VStack(alignment: .leading, spacing: 5) {
-					Text("Tracked Price is $\(entry.configuration.price),\(entry.configuration.cents)")
+					Text("Tracked Price is $\(entry.item.price),\(entry.item.cents)")
 				}
 				.frame(maxWidth: .infinity, alignment: .leading)
 				
@@ -195,24 +200,30 @@ struct TrackerWidget: Widget {
 }
 
 extension ConfigurationAppIntent {
-    fileprivate static var log1: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent(price: "12", cents: "99", discount: "-13")
-        intent.elementId = "ct"
-        intent.elementType = "span"
+	
+    fileprivate static var price0: ConfigurationAppIntent {
+        let intent = ConfigurationAppIntent()
+        intent.querySelector = "#ct"
         return intent
     }
     
-    fileprivate static var log2: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent(price: "13", cents: "79", discount: "0")
-		intent.elementId = "cta"
-		intent.elementType = "span"
-        return intent
-    }
+    fileprivate static var price1: ConfigurationAppIntent {
+        let intent = ConfigurationAppIntent()
+		intent.querySelector = "#ct"
+		return intent
+	}
+	
+	fileprivate static var price2: ConfigurationAppIntent {
+		let intent = ConfigurationAppIntent()
+		intent.querySelector = "#ct"
+		return intent
+	}
 }
 
-#Preview(as: .accessoryRectangular) {
+#Preview(as: .systemMedium) {
     TrackerWidget()
 } timeline: {
-	TrackingEntry(date: .now, configuration: .log1)
-	TrackingEntry(date: .now, configuration: .log2)
+	TrackingEntry(date: .now, item: TrackedItem(price: "10", cents: "49", discount: "-13"), configuration: ConfigurationAppIntent())
+	TrackingEntry(date: .now, item: TrackedItem(price: "13", cents: "99", discount: "-3"), configuration: ConfigurationAppIntent())
+	TrackingEntry(date: .now, item: TrackedItem(price: "16", cents: "65", discount: "-5"), configuration: ConfigurationAppIntent())
 }

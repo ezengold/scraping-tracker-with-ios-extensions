@@ -9,11 +9,9 @@ import Foundation
 
 struct Constants {
 	
-	static let CONTENT_SELECTOR_KEY = "TrackerApp.CONTENT_SELECTOR_KEY"
+	static let ROOT_KEY = "group.com.ezengold.TrackerApp"
 	
-	static let CONTENT_URL_KEY = "TrackerApp.CONTENT_URL_KEY"
+	static let CONTENT_URL_KEY = "CONTENT_URL_KEY"
 	
-	static let CONTENT_TAG_KEY = "TrackerApp.CONTENT_TAG_KEY"
-	
-	static let CONTENT_VALUE_KEY = "TrackerApp.CONTENT_VALUE_KEY"
+	static let CONTENT_SELECTOR_KEY = "CONTENT_SELECTOR_KEY"
 }

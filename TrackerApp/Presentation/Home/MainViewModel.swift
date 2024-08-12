@@ -7,22 +7,23 @@
 
 import Foundation
 import UIKit
+import SwiftSoup
+import SwiftUI
 
 class MainViewModel: ObservableObject {
 	var host: MainViewController
 	
-	var fetchContentUseCase = FetchContentUseCase(api: ContentApiImpl.shared)
+	var fetchItemUseCase = FetchItemUseCase(api: ContentApiImpl.shared)
 	
-	@Published var url: String = "https://www.timeanddate.com/worldclock/timezone/utc"
-	//	@Published var url: String = UserDefaults.standard.string(forKey: Constants.CONTENT_URL_KEY) ?? "https://www.timeanddate.com/worldclock/timezone/utc"
+	@Published var url: String = ""
 	
-	@Published var querySelector: String = "#ct"
-	//	@Published var querySelector: String = UserDefaults.standard.string(forKey: Constants.CONTENT_SELECTOR_KEY) ?? "#ct"
+	@Published var querySelector: String = ""
 	
-	@Published var tagName: String = "span"
-	//	@Published var tagName: String = UserDefaults.standard.string(forKey: Constants.CONTENT_TAG_KEY) ?? "span"
-	
-	@Published var value: String = UserDefaults.standard.string(forKey: Constants.CONTENT_VALUE_KEY) ?? ""
+	@Published var item: TrackedItem = TrackedItem() {
+		didSet {
+			saveValues()
+		}
+	}
 	
 	@Published var isLoading: Bool = false
 	
@@ -34,30 +35,37 @@ class MainViewModel: ObservableObject {
 		} else {
 			self.host = MainViewController()
 		}
-	}
-	
-	func fetchData() {
-		self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
-			self.isLoading = true
+		if let Store = UserDefaults(suiteName: Constants.ROOT_KEY) {
+			if let safeUrl = Store.string(forKey: Constants.CONTENT_URL_KEY), !safeUrl.isEmpty {
+				self.url = safeUrl
+			} else {
+				Store.setValue("https://www.timeanddate.com/worldclock/timezone/utc", forKey: Constants.CONTENT_URL_KEY)
+				self.url = "https://www.timeanddate.com/worldclock/timezone/utc"
+			}
 			
-			Task {
-				do {
-					let _document = try await self.fetchContentUseCase.execute(at: self.url)
-					
-					self.value = self.parseAndGetElement(from: _document)
-					
-					self.isLoading = false
-				} catch {
-					print("Error: \(error.localizedDescription)")
-					self.isLoading = false
-				}
+			if let safeSelector = Store.string(forKey: Constants.CONTENT_SELECTOR_KEY), !safeSelector.isEmpty {
+				self.querySelector = safeSelector
+			} else {
+				Store.setValue("#ct", forKey: Constants.CONTENT_SELECTOR_KEY)
+				self.querySelector = "#ct"
 			}
 		}
 	}
 	
-	func parseAndGetElement(from str: String) -> String {
-		print(str)
-		return "NO-CONTENT-FOUND"
+	func fetchData() {
+		self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
+			self.isLoading = true
+			
+			Task {
+				let _item = await self.fetchItemUseCase.execute(at: self.url, withSelector: self.querySelector)
+				
+				withAnimation {
+					self.item = _item
+				}
+				
+				self.isLoading = false
+			}
+		}
 	}
 	
 	func startFetching() {
@@ -71,9 +79,9 @@ class MainViewModel: ObservableObject {
 	}
 	
 	func saveValues() {
-		UserDefaults.standard.setValue(self.url, forKey: Constants.CONTENT_URL_KEY)
-		UserDefaults.standard.setValue(self.querySelector, forKey: Constants.CONTENT_SELECTOR_KEY)
-		UserDefaults.standard.setValue(self.tagName, forKey: Constants.CONTENT_TAG_KEY)
-		UserDefaults.standard.setValue(self.value, forKey: Constants.CONTENT_VALUE_KEY)
+		if let Store = UserDefaults(suiteName: Constants.ROOT_KEY) {
+			Store.setValue(self.url, forKey: Constants.CONTENT_URL_KEY)
+			Store.setValue(self.querySelector, forKey: Constants.CONTENT_SELECTOR_KEY)
+		}
 	}
 }

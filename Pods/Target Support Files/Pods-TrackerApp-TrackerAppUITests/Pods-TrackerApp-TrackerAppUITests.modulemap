@@ -1,0 +1,6 @@
+framework module Pods_TrackerApp_TrackerAppUITests {
+  umbrella header "Pods-TrackerApp-TrackerAppUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import WidgetKit
 
 class MainViewController: UIViewController {
 	var vm: MainViewModel!
@@ -34,6 +35,8 @@ class MainViewController: UIViewController {
 		])
 		
 		self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
+		
+		WidgetCenter.shared.reloadAllTimelines()
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
@@ -83,10 +86,25 @@ struct MainView: View {
 			.background(Color.white.opacity(0.1))
 			.cornerRadius(10)
 			
-			Text(vm.value)
-				.font(.largeTitle.bold().monospaced())
-				.frame(maxWidth: .infinity, alignment: .center)
-				.padding(.vertical, 40)
+			HStack(alignment: .top, spacing: 5) {
+				Text("\(vm.item.discount)%")
+					.font(.largeTitle)
+					.contentTransition(.numericText())
+					.foregroundColor(.green)
+					.padding(.trailing, 30)
+				
+				Text(vm.item.price)
+					.font(.largeTitle.bold())
+					.contentTransition(.numericText())
+				Text(vm.item.cents)
+					.font(.headline.bold())
+					.contentTransition(.numericText())
+					.offset(CGSize(width: 0.0, height: 5.0))
+				Text(" $ ")
+					.font(.largeTitle)
+			}
+			.frame(maxWidth: .infinity, alignment: .center)
+			.padding(.vertical, 40)
 			
 			HStack {
 				Text("At :")
@@ -109,23 +127,6 @@ struct MainView: View {
 				Text("Selector :")
 					.fontWeight(.black)
 				TextField("#content-id", text: $vm.querySelector, onEditingChanged: { isEditing in
-					if !isEditing {
-						vm.saveValues()
-					}
-				})
-				.frame(maxWidth: .infinity, alignment: .trailing)
-				.multilineTextAlignment(.trailing)
-			}
-			.padding(.vertical, 10)
-			.padding(.horizontal, 12)
-			.frame(maxWidth: .infinity)
-			.background(Color.white.opacity(0.05))
-			.cornerRadius(5)
-			
-			HStack {
-				Text("Tag Name :")
-					.fontWeight(.black)
-				TextField("span", text: $vm.tagName, onEditingChanged: { isEditing in
 					if !isEditing {
 						vm.saveValues()
 					}
