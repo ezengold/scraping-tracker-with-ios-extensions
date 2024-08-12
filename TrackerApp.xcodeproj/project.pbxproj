@@ -17,7 +17,26 @@
 		B132E82B2C643BAD004F2069 /* TrackerAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B132E82A2C643BAD004F2069 /* TrackerAppUITests.swift */; };
 		B132E82D2C643BAD004F2069 /* TrackerAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B132E82C2C643BAD004F2069 /* TrackerAppUITestsLaunchTests.swift */; };
 		B132E83A2C643F23004F2069 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B132E8392C643F23004F2069 /* MainViewModel.swift */; };
-		B132E8402C644631004F2069 /* BackendApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B132E83F2C644631004F2069 /* BackendApi.swift */; };
+		B15500AA2C6A25EB0039FD88 /* FetchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500A92C6A25EB0039FD88 /* FetchContent.swift */; };
+		B15500AB2C6A25EB0039FD88 /* FetchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500A92C6A25EB0039FD88 /* FetchContent.swift */; };
+		B15500AC2C6A25EB0039FD88 /* FetchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500A92C6A25EB0039FD88 /* FetchContent.swift */; };
+		B15500AD2C6A25EB0039FD88 /* FetchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500A92C6A25EB0039FD88 /* FetchContent.swift */; };
+		B15500B52C6A27CA0039FD88 /* GetElementValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500B42C6A27CA0039FD88 /* GetElementValue.swift */; };
+		B15500B62C6A27CA0039FD88 /* GetElementValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500B42C6A27CA0039FD88 /* GetElementValue.swift */; };
+		B15500B72C6A27CA0039FD88 /* GetElementValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500B42C6A27CA0039FD88 /* GetElementValue.swift */; };
+		B15500B82C6A27CA0039FD88 /* GetElementValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500B42C6A27CA0039FD88 /* GetElementValue.swift */; };
+		B15500BB2C6A28FE0039FD88 /* ContentApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BA2C6A28FE0039FD88 /* ContentApi.swift */; };
+		B15500BC2C6A28FE0039FD88 /* ContentApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BA2C6A28FE0039FD88 /* ContentApi.swift */; };
+		B15500BD2C6A28FE0039FD88 /* ContentApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BA2C6A28FE0039FD88 /* ContentApi.swift */; };
+		B15500BE2C6A28FE0039FD88 /* ContentApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BA2C6A28FE0039FD88 /* ContentApi.swift */; };
+		B15500C02C6A29460039FD88 /* ContentApiImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */; };
+		B15500C12C6A29460039FD88 /* ContentApiImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */; };
+		B15500C22C6A29460039FD88 /* ContentApiImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */; };
+		B15500C32C6A29460039FD88 /* ContentApiImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */; };
+		B15500C52C6A2A5D0039FD88 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500C42C6A2A5D0039FD88 /* Constants.swift */; };
+		B15500C62C6A2A5D0039FD88 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500C42C6A2A5D0039FD88 /* Constants.swift */; };
+		B15500C72C6A2A5D0039FD88 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500C42C6A2A5D0039FD88 /* Constants.swift */; };
+		B15500C82C6A2A5D0039FD88 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15500C42C6A2A5D0039FD88 /* Constants.swift */; };
 		B1CDF5182C6575C30005EF4C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CDF5172C6575C30005EF4C /* WidgetKit.framework */; };
 		B1CDF51A2C6575C30005EF4C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CDF5192C6575C30005EF4C /* SwiftUI.framework */; };
 		B1CDF5212C6575C30005EF4C /* TrackerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CDF5202C6575C30005EF4C /* TrackerWidget.swift */; };
@@ -79,7 +98,11 @@
 		B132E82A2C643BAD004F2069 /* TrackerAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAppUITests.swift; sourceTree = "<group>"; };
 		B132E82C2C643BAD004F2069 /* TrackerAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B132E8392C643F23004F2069 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		B132E83F2C644631004F2069 /* BackendApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendApi.swift; sourceTree = "<group>"; };
+		B15500A92C6A25EB0039FD88 /* FetchContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContent.swift; sourceTree = "<group>"; };
+		B15500B42C6A27CA0039FD88 /* GetElementValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetElementValue.swift; sourceTree = "<group>"; };
+		B15500BA2C6A28FE0039FD88 /* ContentApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentApi.swift; sourceTree = "<group>"; };
+		B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentApiImpl.swift; sourceTree = "<group>"; };
+		B15500C42C6A2A5D0039FD88 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B1CDF5152C6575C30005EF4C /* TrackerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TrackerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1CDF5172C6575C30005EF4C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B1CDF5192C6575C30005EF4C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -150,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				B132E83B2C643F39004F2069 /* Core */,
+				B15500A42C6A22B70039FD88 /* Data */,
 				B132E83C2C643F3F004F2069 /* Domain */,
 				B132E83D2C643F4D004F2069 /* Presentation */,
 				B132E8092C643BAC004F2069 /* AppDelegate.swift */,
@@ -182,6 +206,7 @@
 		B132E83B2C643F39004F2069 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B15500C42C6A2A5D0039FD88 /* Constants.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -189,7 +214,8 @@
 		B132E83C2C643F3F004F2069 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				B132E83F2C644631004F2069 /* BackendApi.swift */,
+				B15500B92C6A28C90039FD88 /* Api */,
+				B15500A62C6A22F20039FD88 /* UseCase */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -209,6 +235,31 @@
 				B132E8392C643F23004F2069 /* MainViewModel.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		B15500A42C6A22B70039FD88 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B15500BF2C6A29460039FD88 /* ContentApiImpl.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		B15500A62C6A22F20039FD88 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				B15500A92C6A25EB0039FD88 /* FetchContent.swift */,
+				B15500B42C6A27CA0039FD88 /* GetElementValue.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		B15500B92C6A28C90039FD88 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				B15500BA2C6A28FE0039FD88 /* ContentApi.swift */,
+			);
+			path = Api;
 			sourceTree = "<group>";
 		};
 		B1CDF5162C6575C30005EF4C /* Frameworks */ = {
@@ -393,11 +444,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B132E8402C644631004F2069 /* BackendApi.swift in Sources */,
 				B132E80E2C643BAC004F2069 /* MainView.swift in Sources */,
+				B15500C02C6A29460039FD88 /* ContentApiImpl.swift in Sources */,
+				B15500BB2C6A28FE0039FD88 /* ContentApi.swift in Sources */,
+				B15500AA2C6A25EB0039FD88 /* FetchContent.swift in Sources */,
+				B15500C52C6A2A5D0039FD88 /* Constants.swift in Sources */,
 				B132E80A2C643BAC004F2069 /* AppDelegate.swift in Sources */,
 				B132E80C2C643BAC004F2069 /* SceneDelegate.swift in Sources */,
 				B132E83A2C643F23004F2069 /* MainViewModel.swift in Sources */,
+				B15500B52C6A27CA0039FD88 /* GetElementValue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +460,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B15500C12C6A29460039FD88 /* ContentApiImpl.swift in Sources */,
+				B15500BC2C6A28FE0039FD88 /* ContentApi.swift in Sources */,
+				B15500AB2C6A25EB0039FD88 /* FetchContent.swift in Sources */,
+				B15500C62C6A2A5D0039FD88 /* Constants.swift in Sources */,
+				B15500B62C6A27CA0039FD88 /* GetElementValue.swift in Sources */,
 				B132E8212C643BAD004F2069 /* TrackerAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -414,7 +474,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B132E82B2C643BAD004F2069 /* TrackerAppUITests.swift in Sources */,
+				B15500B72C6A27CA0039FD88 /* GetElementValue.swift in Sources */,
 				B132E82D2C643BAD004F2069 /* TrackerAppUITestsLaunchTests.swift in Sources */,
+				B15500AC2C6A25EB0039FD88 /* FetchContent.swift in Sources */,
+				B15500C22C6A29460039FD88 /* ContentApiImpl.swift in Sources */,
+				B15500BD2C6A28FE0039FD88 /* ContentApi.swift in Sources */,
+				B15500C72C6A2A5D0039FD88 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +488,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1CDF5302C6585970005EF4C /* TrackerWidgetBundle.swift in Sources */,
+				B15500B82C6A27CA0039FD88 /* GetElementValue.swift in Sources */,
 				B1CDF5212C6575C30005EF4C /* TrackerWidget.swift in Sources */,
+				B15500AD2C6A25EB0039FD88 /* FetchContent.swift in Sources */,
+				B15500C32C6A29460039FD88 /* ContentApiImpl.swift in Sources */,
+				B15500BE2C6A28FE0039FD88 /* ContentApi.swift in Sources */,
+				B15500C82C6A2A5D0039FD88 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
