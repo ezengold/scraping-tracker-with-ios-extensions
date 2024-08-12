@@ -36,13 +36,7 @@ class MainViewController: UIViewController {
 		
 		self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
 		
-		WidgetCenter.shared.reloadAllTimelines()
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		vm.timer?.invalidate()
-		vm.timer = nil
-		super.viewDidDisappear(animated)
+		WidgetCenter.shared.reloadTimelines(ofKind: "TrackerWidget")
 	}
 	
 	@objc
@@ -59,26 +53,20 @@ struct MainView: View {
 			HStack(spacing: 3) {
 				Text("Updates")
 					.font(.headline)
-				Rectangle()
-					.fill(vm.timer == nil ? .red : .green)
-					.frame(width: 6, height: 6)
-					.cornerRadius(3)
-					.offset(CGSize(width: 0.0, height: -5.0))
 				if vm.isLoading {
 					ProgressView()
 				}
 				Spacer()
-				if vm.timer == nil {
-					Button("Connect") {
-						vm.fetchData()
+				if vm.isLoading {
+					Button("Cancel") {
+						//
 					}
 					.buttonStyle(BorderedButtonStyle())
 				} else {
-					Button("Disconnect") {
-						vm.stopFetching()
+					Button("Refresh") {
+						vm.fetchData()
 					}
 					.buttonStyle(BorderedButtonStyle())
-					.accentColor(.red)
 				}
 			}
 			.frame(maxWidth: .infinity, alignment: .leading)
@@ -88,54 +76,37 @@ struct MainView: View {
 			
 			HStack(alignment: .top, spacing: 5) {
 				Text("\(vm.item.discount)%")
-					.font(.largeTitle)
+					.font(.system(size: 30))
 					.contentTransition(.numericText())
 					.foregroundColor(.green)
 					.padding(.trailing, 30)
 				
-				Text(vm.item.price)
-					.font(.largeTitle.bold())
+				Text("\(vm.item.price)")
+					.font(.system(size: 30))
 					.contentTransition(.numericText())
-				Text(vm.item.cents)
-					.font(.headline.bold())
-					.contentTransition(.numericText())
-					.offset(CGSize(width: 0.0, height: 5.0))
-				Text(" $ ")
-					.font(.largeTitle)
 			}
 			.frame(maxWidth: .infinity, alignment: .center)
 			.padding(.vertical, 40)
 			
-			HStack {
-				Text("At :")
-					.fontWeight(.black)
-				TextField("A valid URL", text: $vm.url, onEditingChanged: { isEditing in
-					if !isEditing {
-						vm.saveValues()
+			VStack {
+				Text("Product URL")
+					.frame(maxWidth: .infinity, alignment: .leading)
+				TextEditor(text: $vm.url)
+					.scrollContentBackground(.hidden)
+					.autocorrectionDisabled()
+					.padding(5)
+					.frame(minHeight: 100)
+					.frame(maxWidth: .infinity)
+					.background(Color.white.opacity(0.05))
+					.cornerRadius(5)
+					.onChange(of: vm.url) { value, _ in
+						if value.last == "\n" {
+							vm.host.hideKeyboard()
+							vm.saveValues()
+						}
 					}
-				})
-				.frame(maxWidth: .infinity, alignment: .trailing)
-				.multilineTextAlignment(.trailing)
 			}
-			.padding(.vertical, 10)
-			.padding(.horizontal, 12)
-			.frame(maxWidth: .infinity)
-			.background(Color.white.opacity(0.05))
-			.cornerRadius(5)
-			
-			HStack {
-				Text("Selector :")
-					.fontWeight(.black)
-				TextField("#content-id", text: $vm.querySelector, onEditingChanged: { isEditing in
-					if !isEditing {
-						vm.saveValues()
-					}
-				})
-				.frame(maxWidth: .infinity, alignment: .trailing)
-				.multilineTextAlignment(.trailing)
-			}
-			.padding(.vertical, 10)
-			.padding(.horizontal, 12)
+			.padding(15)
 			.frame(maxWidth: .infinity)
 			.background(Color.white.opacity(0.05))
 			.cornerRadius(5)

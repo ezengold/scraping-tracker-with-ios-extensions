@@ -12,28 +12,19 @@ import AppIntents
 // MARK: - Configuration
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
 	
-	static var title: LocalizedStringResource = "Configuration"
+	static var title: LocalizedStringResource = "Tracking Configuration"
 	
 	static var description = IntentDescription("Set up your tracking informations")
 
-	@Parameter(title: "Selector", default: "#ct")
-	var querySelector: String {
+	@Parameter(title: "URL of the Product", default: "")
+	var url: String {
 		didSet {
-			UserDefaults(suiteName: Constants.ROOT_KEY)?.setValue(querySelector, forKey: Constants.CONTENT_SELECTOR_KEY)
+			UserDefaults(suiteName: Constants.ROOT_KEY)?.setValue(url, forKey: Constants.CONTENT_URL_KEY)
 		}
 	}
 	
-	var url: String = UserDefaults(suiteName: Constants.ROOT_KEY)?.string(forKey: Constants.CONTENT_URL_KEY) ?? ""
-	
-	struct ElementTypeOptionsProvider: DynamicOptionsProvider {
-		
-		func results() async throws -> [String] {
-			["span", "div", "p"]
-		}
-		
-		func defaultResult() async -> String? {
-			"span"
-		}
+	init() {
+		self.url = UserDefaults(suiteName: Constants.ROOT_KEY)?.string(forKey: Constants.CONTENT_URL_KEY) ?? ""
 	}
 }
 
@@ -59,7 +50,7 @@ struct Provider: AppIntentTimelineProvider {
 	
 	func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<TrackingEntry> {
 		if !configuration.url.isEmpty {
-			let _item = await FetchItemUseCase(api: ContentApiImpl.shared).execute(at: configuration.url, withSelector: configuration.querySelector)
+			let _item = await FetchItemUseCase(api: ContentApiImpl.shared).execute(at: configuration.url)
 			
 			let entry = TrackingEntry(date: Date(), item: _item, configuration: configuration)
 			
@@ -80,35 +71,29 @@ struct TrackerWidgetEntryView : View {
 			switch family {
 			case .systemSmall:
 				VStack(alignment: .leading, spacing: 5) {
-					Text("Your Amazon article")
-						.font(.footnote)
-					Text("Price")
-						.font(.title2)
+					Text("Order now with")
+						.font(.system(size: 15))
+						.frame(maxWidth: .infinity, alignment: .leading)
+					Text("-\(entry.item.discount)%")
+						.font(.system(size: 25).monospacedDigit())
 						.fontWeight(.heavy)
+						.foregroundColor(.green)
+						.frame(maxWidth: .infinity, alignment: .leading)
+					Text("Discount")
+						.font(.system(size: 15))
+						.frame(maxWidth: .infinity, alignment: .leading)
 					Spacer()
 					
-					Rectangle()
-						.fill(Color.white.opacity(0.1))
-						.frame(height: 1)
-						.frame(maxWidth: .infinity)
-						.padding(.bottom, 5)
-					HStack(alignment: .top, spacing: 0) {
-						Text(entry.item.price)
-							.font(.largeTitle.bold())
-							.contentTransition(.numericText())
-						Text(entry.item.cents)
-							.font(.headline.bold())
-							.contentTransition(.numericText())
-							.offset(CGSize(width: 0.0, height: 5.0))
-						Text(" $ ")
-							.font(.largeTitle)
-					}
+					Text("\(entry.item.price)")
+						.font(.system(size: 20).bold())
+						.contentTransition(.numericText())
+						.frame(maxWidth: .infinity, alignment: .leading)
 				}
 				
 			case .systemMedium:
 				ZStack {
 					VStack(alignment: .leading, spacing: 5) {
-						Text("You Next Five Moves")
+						Text("Your watched aricle")
 							.font(.callout)
 							.frame(maxWidth: .infinity, alignment: .leading)
 						Text("Current Price")
@@ -118,8 +103,8 @@ struct TrackerWidgetEntryView : View {
 						Spacer()
 						
 						HStack(alignment: .center, spacing: 0) {
-							Text("\(entry.item.discount)%")
-								.font(.title)
+							Text("-\(entry.item.discount)%")
+								.font(.title.monospacedDigit())
 								.contentTransition(.numericText())
 								.foregroundColor(.green)
 								.padding(.trailing, 5)
@@ -135,15 +120,9 @@ struct TrackerWidgetEntryView : View {
 							}
 							Spacer()
 							HStack(alignment: .top, spacing: 0) {
-								Text(entry.item.price)
-									.font(.largeTitle.bold())
+								Text("\(entry.item.price)")
+									.font(.title.bold().monospacedDigit())
 									.contentTransition(.numericText())
-								Text(entry.item.cents)
-									.font(.headline.bold())
-									.contentTransition(.numericText())
-									.offset(CGSize(width: 0.0, height: 5.0))
-								Text(" $ ")
-									.font(.largeTitle)
 							}
 						}
 					}
@@ -151,23 +130,17 @@ struct TrackerWidgetEntryView : View {
 				
 			case .accessoryRectangular:
 				VStack(alignment: .leading, spacing: 5) {
-					Text("Tracked Price is")
+					Text("Get \(entry.item.discount)% discount")
 						.fontWeight(.bold)
-					HStack(alignment: .center, spacing: 0) {
-						Text("$ \(entry.item.price)")
-							.font(.largeTitle.bold())
-							.contentTransition(.numericText())
-						Text(entry.item.cents)
-							.font(.headline.bold())
-							.contentTransition(.numericText())
-							.offset(CGSize(width: 0.0, height: -10.0))
-					}
+					Text("\(entry.item.price)")
+						.font(.system(size: 22).weight(.heavy).monospacedDigit())
+						.contentTransition(.numericText())
 				}
 				.frame(maxWidth: .infinity, alignment: .leading)
 				
 			case .accessoryInline:
 				VStack(alignment: .leading, spacing: 5) {
-					Text("Tracked Price is $\(entry.item.price),\(entry.item.cents)")
+					Text("Get \(entry.item.discount)% discount now")
 				}
 				.frame(maxWidth: .infinity, alignment: .leading)
 				
@@ -199,31 +172,9 @@ struct TrackerWidget: Widget {
     }
 }
 
-extension ConfigurationAppIntent {
-	
-    fileprivate static var price0: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.querySelector = "#ct"
-        return intent
-    }
-    
-    fileprivate static var price1: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-		intent.querySelector = "#ct"
-		return intent
-	}
-	
-	fileprivate static var price2: ConfigurationAppIntent {
-		let intent = ConfigurationAppIntent()
-		intent.querySelector = "#ct"
-		return intent
-	}
-}
-
-#Preview(as: .systemMedium) {
+#Preview(as: .accessoryRectangular) {
     TrackerWidget()
 } timeline: {
-	TrackingEntry(date: .now, item: TrackedItem(price: "10", cents: "49", discount: "-13"), configuration: ConfigurationAppIntent())
-	TrackingEntry(date: .now, item: TrackedItem(price: "13", cents: "99", discount: "-3"), configuration: ConfigurationAppIntent())
-	TrackingEntry(date: .now, item: TrackedItem(price: "16", cents: "65", discount: "-5"), configuration: ConfigurationAppIntent())
+	TrackingEntry(date: .now, item: TrackedItem(price: "40735 FCFA", discount: "10"), configuration: ConfigurationAppIntent())
+	TrackingEntry(date: .now, item: TrackedItem(price: "42997 FCFA", discount: "5"), configuration: ConfigurationAppIntent())
 }

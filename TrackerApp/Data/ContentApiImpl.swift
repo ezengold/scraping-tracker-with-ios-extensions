@@ -12,7 +12,7 @@ final class ContentApiImpl: ContentApi {
 	static let shared = ContentApiImpl()
 	
 	func fetchContent(at url: String) async throws -> String? {
-		if let _url = URL(string: url) {
+		if let _url = URL(string: url.trimmingCharacters(in: .whitespacesAndNewlines)) {
 			var _request = URLRequest(url: _url)
 			_request.httpMethod = "GET"
 			_request.setValue("Mozilla/5.0", forHTTPHeaderField: "User-Agent")

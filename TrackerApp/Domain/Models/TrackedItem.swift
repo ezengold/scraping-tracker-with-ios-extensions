@@ -11,7 +11,5 @@ struct TrackedItem {
 	
 	var price: String = "0"
 	
-	var cents: String = "00"
-	
 	var discount: String = "0"
 }

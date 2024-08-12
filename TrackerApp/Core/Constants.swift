@@ -12,6 +12,4 @@ struct Constants {
 	static let ROOT_KEY = "group.com.ezengold.TrackerApp"
 	
 	static let CONTENT_URL_KEY = "CONTENT_URL_KEY"
-	
-	static let CONTENT_SELECTOR_KEY = "CONTENT_SELECTOR_KEY"
 }
