@@ -35,8 +35,8 @@ class MainViewModel: ObservableObject {
 			if let safeUrl = Store.string(forKey: Constants.CONTENT_URL_KEY), !safeUrl.isEmpty {
 				self.url = safeUrl
 			} else {
-				Store.setValue("https://www.timeanddate.com/worldclock/timezone/utc", forKey: Constants.CONTENT_URL_KEY)
-				self.url = "https://www.timeanddate.com/worldclock/timezone/utc"
+				Store.setValue("https://marketplace.anka.africa/fr/article/robe-parfaite-mid-length-dresses-straight-red-for-her-ankara/XQXIIA7", forKey: Constants.CONTENT_URL_KEY)
+				self.url = "https://marketplace.anka.africa/fr/article/robe-parfaite-mid-length-dresses-straight-red-for-her-ankara/XQXIIA7"
 			}
 		}
 	}

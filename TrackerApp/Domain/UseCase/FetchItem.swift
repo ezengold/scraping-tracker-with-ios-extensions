@@ -51,7 +51,7 @@ struct FetchItemUseCase: FetchItem {
 		}
 	}
 	
-	func getPrice(from value: String) -> Int {
+	private func getPrice(from value: String) -> Int {
 		let _value = value.components(separatedBy: .whitespacesAndNewlines).joined()
 		let _matches = _value.matches(of: /[0-9]/)
 		let _output = _matches.map({ String($0.description) }).joined()

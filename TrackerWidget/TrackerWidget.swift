@@ -16,7 +16,7 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 	
 	static var description = IntentDescription("Set up your tracking informations")
 
-	@Parameter(title: "URL of the Product", default: "")
+	@Parameter(title: "Product URL", default: "")
 	var url: String {
 		didSet {
 			UserDefaults(suiteName: Constants.ROOT_KEY)?.setValue(url, forKey: Constants.CONTENT_URL_KEY)
@@ -55,8 +55,14 @@ struct Provider: AppIntentTimelineProvider {
 			let entry = TrackingEntry(date: Date(), item: _item, configuration: configuration)
 			
 			return Timeline(entries: [entry], policy: .atEnd)
+		} else if let safeUrl = UserDefaults(suiteName: Constants.ROOT_KEY)?.string(forKey: Constants.CONTENT_URL_KEY), !safeUrl.isEmpty {
+			let _item = await FetchItemUseCase(api: ContentApiImpl.shared).execute(at: safeUrl)
+			
+			let entry = TrackingEntry(date: Date(), item: _item, configuration: configuration)
+			
+			return Timeline(entries: [entry], policy: .atEnd)
 		} else {
-			return Timeline(entries: [.init(date: Date(), item: TrackedItem(), configuration: .init())], policy: .after(.now.addingTimeInterval(30))) // retry after 30 secs
+			return Timeline(entries: [.init(date: Date(), item: TrackedItem(), configuration: .init())], policy: .after(.now.addingTimeInterval(10 * 60))) // retry after 30 mins
 		}
 	}
 }
@@ -91,7 +97,7 @@ struct TrackerWidgetEntryView : View {
 				}
 				
 			case .systemMedium:
-				ZStack {
+				ZStack(alignment: .topTrailing) {
 					VStack(alignment: .leading, spacing: 5) {
 						Text("Your watched aricle")
 							.font(.callout)
@@ -126,6 +132,10 @@ struct TrackerWidgetEntryView : View {
 							}
 						}
 					}
+					Image("app-icon")
+						.resizable()
+						.frame(width: 40, height: 40)
+						.offset(CGSize(width: 0, height: -5))
 				}
 				
 			case .accessoryRectangular:
@@ -143,6 +153,10 @@ struct TrackerWidgetEntryView : View {
 					Text("Get \(entry.item.discount)% discount now")
 				}
 				.frame(maxWidth: .infinity, alignment: .leading)
+				
+			case .accessoryCircular:
+				ProgressView("\(entry.item.discount)", value: (Double(entry.item.discount) ?? 0.0) / 100)
+					.progressViewStyle(CircularProgressViewStyle())
 				
 			default:
 				EmptyView()
@@ -165,14 +179,25 @@ struct TrackerWidget: Widget {
 	let kind: String = "TrackerWidget"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
+        AppIntentConfiguration(
+			kind: kind,
+			intent: ConfigurationAppIntent.self,
+			provider: Provider()
+		) { entry in
             TrackerWidgetEntryView(entry: entry)
+				.widgetURL(URL(string: entry.configuration.url))
         }
-		.supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular])
+		.supportedFamilies([
+			.systemSmall,
+			.systemMedium,
+			.accessoryInline,
+			.accessoryCircular,
+			.accessoryRectangular
+		])
     }
 }
 
-#Preview(as: .accessoryRectangular) {
+#Preview(as: .systemMedium) {
     TrackerWidget()
 } timeline: {
 	TrackingEntry(date: .now, item: TrackedItem(price: "40735 FCFA", discount: "10"), configuration: ConfigurationAppIntent())

@@ -51,7 +51,7 @@ struct MainView: View {
 	var body: some View {
 		LazyVStack(spacing: 15) {
 			HStack(spacing: 3) {
-				Text("Updates")
+				Text("Tracked Price")
 					.font(.headline)
 				if vm.isLoading {
 					ProgressView()
@@ -74,16 +74,35 @@ struct MainView: View {
 			.background(Color.white.opacity(0.1))
 			.cornerRadius(10)
 			
-			HStack(alignment: .top, spacing: 5) {
-				Text("\(vm.item.discount)%")
-					.font(.system(size: 30))
-					.contentTransition(.numericText())
-					.foregroundColor(.green)
-					.padding(.trailing, 30)
+			HStack(alignment: .top, spacing: 20) {
+				VStack(spacing: 10) {
+					Text("Discount")
+						.font(.footnote)
+						.frame(maxWidth: .infinity, alignment: .leading)
+					Text("\(vm.item.discount)%")
+						.font(.system(size: 25))
+						.contentTransition(.numericText())
+						.foregroundColor(.green)
+						.frame(maxWidth: .infinity, alignment: .leading)
+				}
+				.padding(10)
+				.frame(maxWidth: .infinity)
+				.background(Color.white.opacity(0.05))
+				.cornerRadius(10)
 				
-				Text("\(vm.item.price)")
-					.font(.system(size: 30))
-					.contentTransition(.numericText())
+				VStack(spacing: 10) {
+					Text("Current Price")
+						.font(.footnote)
+						.frame(maxWidth: .infinity, alignment: .leading)
+					Text("\(vm.item.price)")
+						.font(.system(size: 25))
+						.contentTransition(.numericText())
+						.frame(maxWidth: .infinity, alignment: .leading)
+				}
+				.padding(10)
+				.frame(maxWidth: .infinity)
+				.background(Color.white.opacity(0.05))
+				.cornerRadius(10)
 			}
 			.frame(maxWidth: .infinity, alignment: .center)
 			.padding(.vertical, 40)
